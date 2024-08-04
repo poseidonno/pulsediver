@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PulseDiver</title>
+  <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/css/img_rec.css">
+  <link rel="icon" type="image/x-icon" href="../static/images/pulsediverico.ico">
+</head>
+<body>
+<div class="container1">
+  <form method="post" action="/" enctype="multipart/form-data">
+    <div class="icons">
+      <i class="fa fa-search" title="回到搜索界面"></i> <!-- 放大镜图标 -->
+      <label for="fileInput" class="file-icon" title="上传图片"><i class="fa fa-folder"></i></label>
+      <input type="file" id="fileInput" name="file" style="display: none;" accept="image/*">
+      <i class="fa fa-cog toggle-icon" title="设置"></i> <!-- 另一种图标 -->
+    </div>
+    <input type="submit" value="Upload" style="display: none;">
+  </form>
+  <img src="../static/images/pulsediver.png" alt="logo">
+  <hr class="divider">
+</div>
+
+<div class="container2">
+  <img src="/show_image?path={{ target_file }}" alt="原图">
+</div>
+<!-- 第三个容器 -->
+<div class="container3">
+  <div class="image-grid">
+    {% if search_result %}
+      {% for image in search_result %}
+        <div class="image-wrapper">
+          <img src="/show_image?path={{ image }}" alt="Result Image">
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No search results available</p>
+    {% endif %}
+  </div>
+</div>
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const fileIcon = document.querySelector('.file-icon');
+
+  fileIcon.addEventListener('click', function() {
+    fileInput.click();
+  });
+</script>
+</body>
+</html>

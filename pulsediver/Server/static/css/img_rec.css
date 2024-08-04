@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden; /* 禁止整体页面的垂直滚动 */
+}
+.container1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: transparent;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.icons {
+    margin-left: 30px; /* 左边距 */
+    color: #666666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.icons i:hover {
+    color: black; /* 鼠标悬停时图标变成纯黑色 */
+}
+
+.icons i {
+    font-size: 24px; /* 图标大小 */
+    margin-right: 20px; /* 图标之间的右侧间距 */
+}
+.file-icon {
+    cursor: pointer;
+}
+
+.container1 img {
+    position: absolute;
+    top: 50%; /* 将图片的顶部定位到容器的中间 */
+    left: 50%; /* 将图片的左侧定位到容器的中间 */
+    transform: translate(-50%, -50%); /* 通过平移来使图片完全居中 */
+    max-width: 180px; /* 设置最大宽度 */
+    max-height: 100px; /* 设置最大高度 */
+}
+
+.divider {
+    width: 100%; /* 水平线占满容器宽度 */
+    height: 1px; /* 设置水平线的高度 */
+    background-color: #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: -8px; /* 将水平线置于容器底部 */
+}
+
+.container2 {
+    position: fixed;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    background-color: #444;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container2 img {
+    max-width: calc(100% - 40px); /* 让图片宽度不超过容器宽度减去左右留白的距离 */
+    max-height: calc(100% - 60px); /* 限制图片最大高度不超过容器高度减去上下留白的距离 */
+
+}
+.container3 {
+    position: fixed;
+    top: 110px; /* 上方边界保留10px空白 */
+    bottom: 10px; /* 下方边界保留10px空白 */
+    right: 10px; /* 右侧边界保留10px空白 */
+    width: calc(50% - 20px); /* 考虑到左右各留10px的空白 */
+    background-color: #fff;
+    z-index: 1;
+    overflow-y: scroll; /* 允许垂直滚动 */
+    display:                                                                                                         flex;
+    flex-direction: column;
+}
+
+.image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px; /* 调整为内边距来控制图片与边界的间距 */
+}
+
+.image-wrapper {
+    width: calc(50% - 10px); /* 每行展示两张图片，减去间隔留白 */
+    margin: 5px; /* 图片之间的间隔留白 */
+    overflow: hidden; /* 确保图片不溢出容器 */
+}
+
+.image-wrapper img {
+    width: 100%; /* 图片宽度充满其容器 */
+    height: 100%; /* 图片高度充满其容器 */
+    object-fit: cover; /* 保持图片比例并填充容器 */
+}
+
+.search-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 10px; /* 调整按钮大小 */
+    border: none;
+    background-color: #007bff;
+    border-radius: 20px;
+    width: 80px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}

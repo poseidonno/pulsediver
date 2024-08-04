@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PulseDiver</title>
+  <link rel="stylesheet" href="../static/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/css/img_rec.css">
+  <link rel="icon" type="image/x-icon" href="../static/images/pulsediverico.ico">
+</head>
+<body>
+<div class="container1">
+  <form method="post" action="/"  enctype="multipart/form-data">
+    <div class="icons">
+      <i class="fa fa-search" id="searchIcon" title="回到搜索界面"></i> <!-- 放大镜图标 -->
+      <label for="fileInput" class="file-icon" title="上传图片"><i class="fa fa-folder"></i></label>
+      <input type="file" id="fileInput" name="file" style="display: none;" accept="image/*">
+      <i class="fa fa-cog toggle-icon" title="设置"></i> <!-- 另一种图标 -->
+    </div>
+    <input type="submit" value="Upload" style="display: none;">
+  </form>
+  <img src="../static/images/pulsediver.png" alt="logo">
+  <hr class="divider">
+</div>
+
+<div class="container2">
+  <img src="/show_image?path={{ target_file }}" alt="原图">
+</div>
+<!-- 第三个容器 -->
+<div class="container3">
+  <div class="image-grid">
+    {% if search_result %}
+      {% for image in search_result %}
+        <div class="image-wrapper">
+          <img src="/show_image?path={{ image }}" alt="Result Image">
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No search results available</p>
+    {% endif %}
+  </div>
+</div>
+
+  <div id="overlay" style="width: 100%; height: 100%;display: none;position: fixed; z-index: 50; content: '';
+    background-color: rgba(44,44,44,0.52);
+">
+  </div>
+
+<div id="dialog-container" style="display: none;position: fixed;flex-direction:column;
+ align-items:center;top:30%;height: 160px;
+ width: 250px;background-color: #e5e5e5;z-index: 60;border-radius: 12px;
+box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);;
+">
+     <div style="display: flex; flex-direction: column; align-items: center">
+         <span style="font-size: 20px;font-weight: 600; letter-spacing: 6px;color: #5b5b5b;font-family: 'Microsoft YaHei UI';margin-top: 20px">
+             以图搜图
+         </span>
+         <span id="dialogContent" style="margin-top: 18px;font-size: 13px;font-family: 'Microsoft YaHei UI'">
+             点击确认以图搜图
+         </span>
+        <div style="display: flex;flex-direction: row;justify-content:space-around;margin-top: 30px">
+             <button class="search-button" style="position:absolute;width: 60px; height: 24px; font-size:12px;padding: 0 ;margin-left: -90px" id="btn1" onclick="ToResult()">确定</button>
+             <button class="search-button" style="position:absolute;width: 60px;  height: 24px ;font-size:12px;padding: 0 ;margin-right: -30px"  id="btn2" onclick="cancle()" >取消</button>
+         </div>
+     </div>
+ </div>
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const fileIcon = document.querySelector('.file-icon');
+ const overlay = document.getElementById('overlay');
+    const infoContent = document.getElementById('dialogContent')
+    const btn1 = document.getElementById('btn1')
+    const btn2 = document.getElementById('btn2')
+     const dialog = document.getElementById("dialog-container")
+
+const ToResult = () => {
+        {#overlay.style.display = 'none'#}
+        window.location.href = "http://127.0.0.1:5000/img_rec?filename=target_img.jpg"
+        btn1.style.display = 'none'
+        btn2.style.display = 'none'
+
+        infoContent.innerText = '正在为你跳转搜图结果, 请稍后...'
+    }
+    const cancle = () => {
+          const dialog = document.getElementById("dialog-container")
+            dialog.style.display = 'none'
+        overlay.style.display = 'none'
+
+    }
+    fileIcon.addEventListener('click', function(event) {
+      event.stopPropagation();
+      fileInput.click(); // 触发文件输入的点击事件
+    });
+    fileInput.addEventListener('change', function() {
+    const selectedFile = fileInput.files[0];
+    if (selectedFile) {
+        overlay.style.display = 'flex'
+        infoContent.innerText = "文件上传中..."
+        btn1.style.display = 'none'
+        btn2.style.display = 'none'
+        dialog.style.display = 'flex'
+        {#alert('已选择文件: ' + selectedFile.name);#}
+        // 可以进行其他文件操作
+        // 提交表单，触发文件上传到后端
+         const form = document.querySelector('form');
+        const formData = new FormData(form);
+        formData.append('file', selectedFile);
+
+        fetch('/', {
+            method: 'POST',
+            body: formData
+        })
+        .then((response) => {
+            infoContent.innerText = "点击开始以图搜图"
+            btn1.style.display = ''
+            btn2.style.display = ''
+        } )
+        .catch(error => {
+            console.error('上传文件时出现错误:', error);
+        });
+    }
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // 获取图标元素
+    var searchIcon = document.getElementById("searchIcon");
+
+    // 添加点击事件监听器
+    searchIcon.addEventListener("click", function() {
+      // 点击后跳转到指定 URL
+      window.location.href = "http://127.0.0.1:5000";
+    });
+  });
+</script>
+</body>
+</html>
+<style>
+    .fill-button {
+  z-index: 1;
+        border-radius: 6px;
+  position: relative;
+  font-size: inherit;
+  font-family: inherit;
+  color: black;
+  outline: none;
+  border: white 1px;
+  background-color: hsl(216, 66%, 84%);
+  overflow: hidden;
+  transition: color 0.4s ease-in-out;
+}
+
+.fill-button::before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background-color: #4f97e1;
+  transform-origin: center;
+  transform: translate3d(-50%, -50%, 0) scale3d(0, 0, 0);
+  transition: transform 0.45s ease-in-out;
+}
+
+.fill-button:hover {
+  cursor: pointer;
+  color: #161616;
+}
+
+.fill-button:hover::before {
+  transform: translate3d(-50%, -50%, 0) scale3d(15, 15, 15);
+}
+
+</style>
